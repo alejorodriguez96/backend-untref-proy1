@@ -43,9 +43,26 @@ app.delete("/:id", (req, res) => {
     if (nuevaBD.length === BD.length) {
       return res.status(404).send("Fruta no encontrada!");
     }
-    guardarFrutas(BD);
+    guardarFrutas(nuevaBD);
     res.status(200).send("Fruta eliminada!");
 });
+
+// Ruta para actualizar una fruta
+app.put("/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const nuevaFruta = req.body;
+    const resultado = BD.find((fruta) => fruta.id === id);
+    if (!resultado) {
+      return res.status(404).send("Fruta no encontrada!");
+    }
+    BD = BD.map((fruta) => {
+      return fruta.id === id ? {...fruta, ...nuevaFruta} : fruta;
+    });
+    guardarFrutas(BD);
+    res.status(200).send("Fruta actualizada!");
+});
+
+
 
 // Ruta para manejar las solicitudes a rutas no existentes
 app.get("*", (req, res) => {
