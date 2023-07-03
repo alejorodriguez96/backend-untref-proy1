@@ -36,6 +36,17 @@ app.post("/", (req, res) => {
     res.status(201).send("Fruta agregada!"); // Enviar una respuesta exitosa
 });
 
+// Ruta para eliminar una fruta
+app.delete("/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    nuevaBD = BD.filter((fruta) => fruta.id !== id);
+    if (nuevaBD.length === BD.length) {
+      return res.status(404).send("Fruta no encontrada!");
+    }
+    guardarFrutas(BD);
+    res.status(200).send("Fruta eliminada!");
+});
+
 // Ruta para manejar las solicitudes a rutas no existentes
 app.get("*", (req, res) => {
   res.status(404).send("Lo sentimos, la página que buscas no existe.");
