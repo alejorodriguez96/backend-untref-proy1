@@ -62,7 +62,15 @@ app.put("/:id", (req, res) => {
     res.status(200).send("Fruta actualizada!");
 });
 
-
+// Ruta para obtener una fruta por su id
+app.get("/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const resultado = BD.find((fruta) => fruta.id === id);
+    if (!resultado) {
+      return res.status(404).send("Fruta no encontrada!");
+    }
+    res.status(200).send(resultado);
+});
 
 // Ruta para manejar las solicitudes a rutas no existentes
 app.get("*", (req, res) => {
